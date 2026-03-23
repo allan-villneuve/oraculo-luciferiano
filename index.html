@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oráculo Luciferiano | Allan</title>
+
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=MedievalSharp&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Cinzel', serif;
+    background: #000;
+    overflow-x: hidden;
+    color: #f0f0f0;
+}
+
+#particles {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.container {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.fade {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 0.8s;
+}
+.fade.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.profile {
+    width: 120px;
+    border-radius: 50%;
+    border: 2px solid #d4af37;
+    margin-top: 20px;
+    animation: pulseSoft 3s infinite;
+    object-fit: cover;
+    box-shadow: 0 0 20px rgba(212,175,55,0.3);
+}
+
+h1 {
+    font-family: 'UnifrakturCook', serif;
+    color: #d4af37;
+    text-shadow: 0 0 12px rgba(212,175,55,0.6);
+    animation: pulseSoft 3s infinite;
+    font-size: 2.5rem;
+    margin: 20px 0;
+}
+
+.frase {
+    font-family: 'MedievalSharp', cursive;
+    color: #d4af37;
+    margin-bottom: 20px;
+    font-style: italic;
+    font-size: 1.1rem;
+}
+
+.bio {
+    font-family: 'MedievalSharp', cursive;
+    color: #eee;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.botao {
+    display: block;
+    font-family: 'Cinzel', serif;
+    background: linear-gradient(145deg, #8a0000, #d4af37);
+    color: #fff;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.4s ease;
+    box-shadow: 0 0 8px rgba(212,175,55,0.3);
+    animation: goldPulse 4s ease-in-out infinite;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.botao:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 18px rgba(212,175,55,0.7);
+}
+
+.card {
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(6px);
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 15px;
+    font-family: 'MedievalSharp', cursive;
+    border: 1px solid rgba(212,175,55,0.2);
+}
+
+.footer {
+    margin-top: 30px;
+    font-size: 12px;
+    color: #ccc;
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.96);
+    top: 0;
+    left: 0;
+    z-index: 999;
+    backdrop-filter: blur(10px);
+    overflow-y: auto;
+}
+
+.modal-container {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1000;
+}
+
+.modal-card {
+    background: linear-gradient(145deg, #0a0a0a, #000);
+    padding: 30px 25px;
+    border-radius: 20px;
+    border: 2px solid rgba(212,175,55,0.5);
+    box-shadow: 0 0 40px rgba(212,175,55,0.2);
+    position: relative;
+    animation: modalFadeIn 0.5s ease;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.fechar-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+    font-size: 28px;
+    color: #d4af37;
+    transition: 0.3s;
+    font-weight: bold;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(212,175,55,0.1);
+    z-index: 10;
+}
+
+.fechar-modal:hover {
+    color: #ff0000;
+    transform: rotate(90deg);
+    background: rgba(212,175,55,0.2);
+}
+
+.modal-titulo {
+    font-family: 'UnifrakturCook', serif;
+    color: #d4af37;
+    text-shadow: 0 0 12px rgba(212,175,55,0.6);
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    animation: pulseSoft 2s infinite;
+}
+
+.modal-frase {
+    font-family: 'MedievalSharp', cursive;
+    color: #d4af37;
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 25px;
+    font-size: 1rem;
+    border-top: 1px solid rgba(212,175,55,0.3);
+    border-bottom: 1px solid rgba(212,175,55,0.3);
+    padding: 12px 0;
+}
+
+.modal-descricao {
+    font-family: 'MedievalSharp', cursive;
+    color: #eee;
+    line-height: 1.8;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.modal-inclui {
+    background: rgba(212,175,55,0.1);
+    padding: 15px;
+    border-radius: 12px;
+    margin: 20px 0;
+    border-left: 3px solid #d4af37;
+}
+
+.modal-inclui p {
+    margin: 8px 0;
+    font-family: 'MedievalSharp', cursive;
+}
+
+.modal-valor {
+    font-size: 2rem;
+    color: #d4af37;
+    text-align: center;
+    margin: 20px 0;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(212,175,55,0.5);
+}
+
+.modal-botao {
+    display: inline-block;
+    background: linear-gradient(145deg, #d4af37, #8a0000);
+    color: #fff;
+    padding: 14px 35px;
+    margin: 10px 0;
+    border-radius: 40px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.4s ease;
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    box-shadow: 0 0 15px rgba(212,175,55,0.3);
+    animation: goldPulse 3s infinite;
+    border: none;
+    cursor: pointer;
+    width: auto;
+    text-align: center;
+}
+
+.modal-botao:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(212,175,55,0.6);
+}
+
+.modal-aviso {
+    font-size: 0.85rem;
+    color: #999;
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(212,175,55,0.2);
+}
+
+.modal-particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+}
+
+/* ANIMAÇÕES */
+@keyframes pulseSoft {
+    0% { transform: scale(1); text-shadow: 0 0 12px rgba(212,175,55,0.6); }
+    50% { transform: scale(1.01); text-shadow: 0 0 20px rgba(212,175,55,0.9); }
+    100% { transform: scale(1); text-shadow: 0 0 12px rgba(212,175,55,0.6); }
+}
+
+@keyframes goldPulse {
+    0% { box-shadow: 0 0 6px rgba(212,175,55,0.2); }
+    50% { box-shadow: 0 0 14px rgba(212,175,55,0.5); }
+    100% { box-shadow: 0 0 6px rgba(212,175,55,0.2); }
+}
+
+/* Scroll personalizado */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d4af37;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #ffd700;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .modal-titulo {
+        font-size: 1.8rem;
+    }
+    
+    .modal-valor {
+        font-size: 1.5rem;
+    }
+    
+    .modal-botao {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="particles"></canvas>
+
+<div class="container">
+
+<img src="IMG_0349.jpg" class="profile fade" alt="Oráculo Luciferiano" onerror="this.src='https://via.placeholder.com/120x120/000000/d4af37?text=Oráculo'">
+
+<h1 class="fade">Oráculo Luciferiano</h1>
+
+<div class="frase fade">
+“Desperte sua consciência. A luz revela o que está oculto.”
+</div>
+
+<div class="bio fade">
+Consultas espirituais profundas para revelar caminhos, desbloquear energias e trazer clareza para sua vida.
+</div>
+
+<!-- BOTÕES COM MODAIS -->
+<button class="botao fade" onclick="abrirModalCompleta()">🔮 Consulta Completa</button>
+<button class="botao fade" onclick="abrirModalAmor()">❤️ Amor</button>
+<button class="botao fade" onclick="abrirModalFinanceiro()">💰 Financeiro</button>
+
+<!-- PAGAMENTO -->
+<div class="card fade">
+💳 <b>Pagamento via Pix</b><br><br>
+Após o pagamento, envie o comprovante no WhatsApp para iniciar sua consulta.
+</div>
+
+<!-- ESCASSEZ -->
+<div class="card fade">
+⚠️ Atendimentos limitados por dia para manter a qualidade espiritual.
+</div>
+
+<!-- FRASES -->
+<div class="card fade">
+“A consciência é a chama que revela a verdade.”
+</div>
+
+<div class="card fade">
+“A luz interior guia aqueles que buscam conhecimento.”
+</div>
+
+<div class="footer fade">
+© Oráculo Luciferiano
+</div>
+
+</div>
+
+<!-- MODAL CONSULTA COMPLETA -->
+<div id="modalCompleta" class="modal">
+    <canvas id="modalParticles1" class="modal-particle-canvas"></canvas>
+    <div class="modal-container">
+        <div class="modal-card">
+            <div class="fechar-modal" onclick="fecharModalCompleta(true)">✕</div>
+            <div class="modal-titulo">🔮 Consulta Completa</div>
+            <div class="modal-frase">
+                “A luz revela todos os caminhos ocultos da sua alma”
+            </div>
+            <div class="modal-descricao">
+                Através da luz de Lúcifer, revelo caminhos ocultos, energia espiritual e decisões da sua vida. Uma leitura profunda que ilumina todos os aspectos da sua existência.
+            </div>
+            <div class="modal-inclui">
+                <p>✨ <strong>Inclui:</strong></p>
+                <p>❤️ Análise amorosa completa</p>
+                <p>💰 Direcionamento financeiro</p>
+                <p>🌀 Leitura espiritual profunda</p>
+                <p>🕯️ Caminhos e direções da vida</p>
+                <p>⚡ Desbloqueio energético</p>
+            </div>
+            <div class="modal-valor">
+                💰 R$100
+            </div>
+            <div style="text-align: center;">
+                <a href="https://wa.me/5511933811738?text=Quero%20consulta%20completa" class="modal-botao" onclick="fecharModalCompleta(false)">
+                    📲 Iniciar Consulta Agora
+                </a>
+            </div>
+            <div class="modal-aviso">
+                ⚡ Após o pagamento, envie o comprovante no WhatsApp<br>
+                Atendimento rápido e sigiloso
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL AMOR -->
+<div id="modalAmor" class="modal">
+    <canvas id="modalParticles2" class="modal-particle-canvas"></canvas>
+    <div class="modal-container">
+        <div class="modal-card">
+            <div class="fechar-modal" onclick="fecharModalAmor(true)">✕</div>
+            <div class="modal-titulo">❤️ Amor</div>
+            <div class="modal-frase">
+                “O coração conhece caminhos que a mente ignora”
+            </div>
+            <div class="modal-descricao">
+                Leitura sobre sentimentos, conexões emocionais e caminhos do coração. Descubra o que o amor tem a revelar para sua alma e encontre clareza nas suas relações.
+            </div>
+            <div class="modal-inclui">
+                <p>💕 <strong>O que será revelado:</strong></p>
+                <p>🔮 Sentimentos verdadeiros</p>
+                <p>💑 Conexões emocionais</p>
+                <p>🌹 Caminhos para o amor</p>
+                <p>✨ Evolução emocional</p>
+                <p>⚠️ <em>Não respondo sobre traição - apenas o necessário para sua evolução</em></p>
+            </div>
+            <div class="modal-valor">
+                💰 R$50
+            </div>
+            <div style="text-align: center;">
+                <a href="https://wa.me/5511933811738?text=Quero%20consulta%20amorosa" class="modal-botao" onclick="fecharModalAmor(false)">
+                    📲 Iniciar Consulta Amorosa
+                </a>
+            </div>
+            <div class="modal-aviso">
+                🌹 A luz do amor revela o necessário para sua evolução emocional
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL FINANCEIRO -->
+<div id="modalFinanceiro" class="modal">
+    <canvas id="modalParticles3" class="modal-particle-canvas"></canvas>
+    <div class="modal-container">
+        <div class="modal-card">
+            <div class="fechar-modal" onclick="fecharModalFinanceiro(true)">✕</div>
+            <div class="modal-titulo">💰 Financeiro</div>
+            <div class="modal-frase">
+                “A prosperidade flui para mentes iluminadas”
+            </div>
+            <div class="modal-descricao">
+                Leitura focada em prosperidade, caminhos financeiros e oportunidades. Lúcifer representa a luz do conhecimento e evolução material — abra seus caminhos para a abundância.
+            </div>
+            <div class="modal-inclui">
+                <p>💎 <strong>Análise completa:</strong></p>
+                <p>📈 Oportunidades de negócios</p>
+                <p>🚫 Bloqueios financeiros</p>
+                <p>🔄 Melhores momentos para investir</p>
+                <p>✨ Prosperidade e abundância</p>
+                <p>💡 Direcionamento profissional</p>
+            </div>
+            <div class="modal-valor">
+                💰 R$50
+            </div>
+            <div style="text-align: center;">
+                <a href="https://wa.me/5511933811738?text=Quero%20consulta%20financeira" class="modal-botao" onclick="fecharModalFinanceiro(false)">
+                    📲 Iniciar Consulta Financeira
+                </a>
+            </div>
+            <div class="modal-aviso">
+                💫 A luz da prosperidade guia seus caminhos para a abundância
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// VARIÁVEL PARA CONTROLAR O HISTÓRICO
+let modalHistory = [];
+
+// FUNÇÕES PARA ABRIR MODAIS COM HISTÓRICO
+function abrirModalCompleta() {
+    modalHistory.push({
+        tipo: 'completa',
+        scrollY: window.scrollY
+    });
+    
+    document.getElementById('modalCompleta').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    iniciarParticlesModal('modalParticles1');
+    history.pushState({ modal: 'completa' }, '', '#consulta-completa');
+}
+
+function abrirModalAmor() {
+    modalHistory.push({
+        tipo: 'amor',
+        scrollY: window.scrollY
+    });
+    
+    document.getElementById('modalAmor').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    iniciarParticlesModal('modalParticles2');
+    history.pushState({ modal: 'amor' }, '', '#amor');
+}
+
+function abrirModalFinanceiro() {
+    modalHistory.push({
+        tipo: 'financeiro',
+        scrollY: window.scrollY
+    });
+    
+    document.getElementById('modalFinanceiro').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    iniciarParticlesModal('modalParticles3');
+    history.pushState({ modal: 'financeiro' }, '', '#financeiro');
+}
+
+function fecharModalCompleta(voltarAba = true) {
+    document.getElementById('modalCompleta').style.display = 'none';
+    document.body.style.overflow = 'auto';
+    pararParticlesModal('modalParticles1');
+    
+    if (voltarAba && modalHistory.length > 0) {
+        const ultimo = modalHistory.pop();
+        if (ultimo.scrollY !== undefined) {
+            window.scrollTo(0, ultimo.scrollY);
+        }
+        history.back();
+    } else if (!voltarAba) {
+        if (modalHistory.length > 0 && modalHistory[modalHistory.length - 1].tipo === 'completa') {
+            modalHistory.pop();
+        }
+        if (window.location.hash === '#consulta-completa') {
+            history.pushState('', document.title, window.location.pathname);
+        }
+    }
+}
+
+function fecharModalAmor(voltarAba = true) {
+    document.getElementById('modalAmor').style.display = 'none';
+    document.body.style.overflow = 'auto';
+    pararParticlesModal('modalParticles2');
+    
+    if (voltarAba && modalHistory.length > 0) {
+        const ultimo = modalHistory.pop();
+        if (ultimo.scrollY !== undefined) {
+            window.scrollTo(0, ultimo.scrollY);
+        }
+        history.back();
+    } else if (!voltarAba) {
+        if (modalHistory.length > 0 && modalHistory[modalHistory.length - 1].tipo === 'amor') {
+            modalHistory.pop();
+        }
+        if (window.location.hash === '#amor') {
+            history.pushState('', document.title, window.location.pathname);
+        }
+    }
+}
+
+function fecharModalFinanceiro(voltarAba = true) {
+    document.getElementById('modalFinanceiro').style.display = 'none';
+    document.body.style.overflow = 'auto';
+    pararParticlesModal('modalParticles3');
+    
+    if (voltarAba && modalHistory.length > 0) {
+        const ultimo = modalHistory.pop();
+        if (ultimo.scrollY !== undefined) {
+            window.scrollTo(0, ultimo.scrollY);
+        }
+        history.back();
+    } else if (!voltarAba) {
+        if (modalHistory.length > 0 && modalHistory[modalHistory.length - 1].tipo === 'financeiro') {
+            modalHistory.pop();
+        }
+        if (window.location.hash === '#financeiro') {
+            history.pushState('', document.title, window.location.pathname);
+        }
+    }
+}
+
+window.addEventListener('popstate', function(event) {
+    const modalCompleta = document.getElementById('modalCompleta');
+    const modalAmor = document.getElementById('modalAmor');
+    const modalFinanceiro = document.getElementById('modalFinanceiro');
+    
+    if (modalCompleta.style.display === 'block') {
+        fecharModalCompleta(false);
+    } else if (modalAmor.style.display === 'block') {
+        fecharModalAmor(false);
+    } else if (modalFinanceiro.style.display === 'block') {
+        fecharModalFinanceiro(false);
+    }
+});
+
+window.onclick = function(event) {
+    const modalCompleta = document.getElementById('modalCompleta');
+    const modalAmor = document.getElementById('modalAmor');
+    const modalFinanceiro = document.getElementById('modalFinanceiro');
+    
+    if (event.target == modalCompleta) {
+        fecharModalCompleta(true);
+    }
+    if (event.target == modalAmor) {
+        fecharModalAmor(true);
+    }
+    if (event.target == modalFinanceiro) {
+        fecharModalFinanceiro(true);
+    }
+}
+
+let modalAnimations = {};
+
+function iniciarParticlesModal(canvasId) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let animationId;
+    
+    class Particle {
+        constructor(){
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 1;
+            this.speedX = (Math.random() - 0.5) * 0.3;
+            this.speedY = (Math.random() - 0.5) * 0.3;
+        }
+        update(){
+            this.x += this.speedX;
+            this.y += this.speedY;
+            
+            if(this.x < 0) this.x = canvas.width;
+            if(this.x > canvas.width) this.x = 0;
+            if(this.y < 0) this.y = canvas.height;
+            if(this.y > canvas.height) this.y = 0;
+        }
+        draw(){
+            ctx.fillStyle = "rgba(212,175,55,0.6)";
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+    
+    function init() {
+        for(let i = 0; i < 100; i++) {
+            particles.push(new Particle());
+        }
+    }
+    
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        animationId = requestAnimationFrame(animate);
+    }
+    
+    init();
+    animate();
+    
+    modalAnimations[canvasId] = animationId;
+    
+    function handleResize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        particles = [];
+        init();
+    }
+    
+    window.addEventListener('resize', handleResize);
+    modalAnimations[canvasId + '_resize'] = handleResize;
+}
+
+function pararParticlesModal(canvasId) {
+    if(modalAnimations[canvasId]) {
+        cancelAnimationFrame(modalAnimations[canvasId]);
+        delete modalAnimations[canvasId];
+    }
+    if(modalAnimations[canvasId + '_resize']) {
+        window.removeEventListener('resize', modalAnimations[canvasId + '_resize']);
+        delete modalAnimations[canvasId + '_resize'];
+    }
+    const canvas = document.getElementById(canvasId);
+    if(canvas) {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+}
+
+const elementos = document.querySelectorAll('.fade');
+function mostrar() {
+    elementos.forEach(el => {
+        if(el.getBoundingClientRect().top < window.innerHeight - 50){
+            el.classList.add('show');
+        }
+    });
+}
+window.addEventListener('scroll', mostrar);
+window.addEventListener('load', mostrar);
+
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+class MainParticle {
+    constructor(){
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 1;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.speedY = (Math.random() - 0.5) * 0.5;
+    }
+    update(){
+        this.x += this.speedX;
+        this.y += this.speedY;
+        
+        if(this.x < 0) this.x = canvas.width;
+        if(this.x > canvas.width) this.x = 0;
+        if(this.y < 0) this.y = canvas.height;
+        if(this.y > canvas.height) this.y = 0;
+    }
+    draw(){
+        ctx.fillStyle = "rgba(212,175,55,0.5)";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+function initMainParticles() {
+    for(let i = 0; i < 150; i++) {
+        particles.push(new MainParticle());
+    }
+}
+
+function animateMain() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+        p.update();
+        p.draw();
+    });
+    requestAnimationFrame(animateMain);
+}
+
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    particles = [];
+    initMainParticles();
+});
+
+initMainParticles();
+animateMain();
+</script>
+
+</body>
+</html>
